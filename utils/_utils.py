@@ -14,7 +14,7 @@ custom_transform = transforms.Compose([
 ])
 
 def make_data_loader(args):
-    
+    #calculate_mean_and_std(args)
     # Get Dataset
     dataset = datasets.ImageFolder(args.data, transform=custom_transform)
     
@@ -33,3 +33,17 @@ def make_data_loader(args):
     test_loader = DataLoader(test_dataset, batch_size=args.batch_size, num_workers=cores, shuffle=False, pin_memory=True)
     
     return train_loader, test_loader
+
+def calculate_mean_and_std(args):
+    # Load dataset
+    dataset = datasets.ImageFolder(args.data, transform=transforms.ToTensor())
+    
+    # Stack all images into a tensor
+    data = torch.cat([img[0].view(3, -1) for img in dataset], dim=1)  # Assuming RGB
+    
+    # Calculate mean and std per channel
+    mean = data.mean(dim=1)
+    std = data.std(dim=1)
+    
+    print("Mean:", mean)
+    print("Std Dev:", std)
