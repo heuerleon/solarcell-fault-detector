@@ -81,8 +81,8 @@ if __name__ == '__main__':
     # hyperparameters
     args.epochs = 5
     args.learning_rate = 1e-3
-    args.batch_size = 64
-    args.weight_decay = 1e-4
+    args.batch_size = 128
+    args.weight_decay = 1e-5
 
     # check settings
     print("==============================")
@@ -108,6 +108,7 @@ if __name__ == '__main__':
     # you have to change num_classes to 2
     num_features = model.classifier[1].in_features
     model.classifier[1] = nn.Linear(num_features, num_classes)
+    #model.classifier.add_module('Dropout', nn.Dropout(p=0.3))
     model.to(device)
     print(model)
 
