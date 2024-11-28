@@ -79,7 +79,7 @@ if __name__ == '__main__':
     """
     
     # hyperparameters
-    args.epochs = 8
+    args.epochs = 9
     args.learning_rate = 1e-3
     args.batch_size = 64
     args.weight_decay = 1e-4
