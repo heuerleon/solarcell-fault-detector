@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 
 # you can change input size(don't forget to change linear layer!)
 custom_transform = transforms.Compose([
-    transforms.Resize((100, 200)),
+    transforms.Resize((224, 224)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.5], std=[0.5])  # Standardwerte
 ])

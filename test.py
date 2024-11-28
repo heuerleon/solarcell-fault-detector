@@ -6,7 +6,7 @@ import torch.nn as nn # edited
 from tqdm import tqdm
 from utils._utils import make_data_loader
 from model import BaseModel
-from torchvision.models import efficientnet_v2_s
+from torchvision.models import mobilenet_v3_large
 
 def test(args, data_loader, model):
     true = np.array([])
@@ -50,10 +50,14 @@ if __name__ == '__main__':
 
     # instantiate model
     # model = BaseModel()
-    model = efficientnet_v2_s()
+    model = mobilenet_v3_large()
     
-    num_features = model.classifier[1].in_features
-    model.classifier[1] = nn.Linear(num_features, num_classes)
+    num_features = model.classifier[0].in_features
+    model.classifier = nn.Sequential(
+        nn.Linear(num_features, 1280),
+        nn.Hardswish(),
+        nn.Linear(1280, num_classes)  # Binary classification
+    )
     
     model.load_state_dict(torch.load(args.model_path))
     model = model.to(device)

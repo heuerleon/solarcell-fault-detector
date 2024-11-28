@@ -7,7 +7,7 @@ from model import BaseModel
 
 import torch
 import torch.nn as nn # edited
-from torchvision.models import efficientnet_v2_s, EfficientNet_V2_S_Weights
+from torchvision.models import mobilenet_v3_large, MobileNet_V3_Large_Weights
 
 # wsl
 #import torch.multiprocessing as mp
@@ -79,10 +79,10 @@ if __name__ == '__main__':
     """
     
     # hyperparameters
-    args.epochs = 5
+    args.epochs = 8
     args.learning_rate = 1e-3
-    args.batch_size = 128
-    args.weight_decay = 1e-5
+    args.batch_size = 64
+    args.weight_decay = 1e-4
 
     # check settings
     print("==============================")
@@ -103,11 +103,16 @@ if __name__ == '__main__':
     # model = BaseModel()
     
     # torchvision model
-    model = efficientnet_v2_s(weights=EfficientNet_V2_S_Weights)
+    model = mobilenet_v3_large(weights=MobileNet_V3_Large_Weights)
+    print(model.classifier)
     
     # you have to change num_classes to 2
-    num_features = model.classifier[1].in_features
-    model.classifier[1] = nn.Linear(num_features, num_classes)
+    num_features = model.classifier[0].in_features
+    model.classifier = nn.Sequential(
+        nn.Linear(num_features, 1280),
+        nn.Hardswish(),
+        nn.Linear(1280, num_classes)  # Binary classification
+    )
     #model.classifier.add_module('Dropout', nn.Dropout(p=0.3))
     model.to(device)
     print(model)
