@@ -24,7 +24,7 @@ def train(args, data_loader, model):
     """
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=9, eta_min=1e-5)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.t_max, eta_min=args.eta_min)
 
     for epoch in range(args.epochs):
         train_losses = [] 
@@ -79,10 +79,12 @@ if __name__ == '__main__':
     """
     
     # hyperparameters
-    args.epochs = 9
+    args.epochs = 6
     args.learning_rate = 1e-3
     args.batch_size = 64
     args.weight_decay = 1e-4
+    args.t_max = 6
+    args.eta_min = 1e-5
 
     # check settings
     print("==============================")
@@ -94,6 +96,9 @@ if __name__ == '__main__':
     print("Batch_size:", args.batch_size)
     print("learning_rate:", args.learning_rate)
     print("Epochs:", args.epochs)
+    print("Weight decay:", args.weight_decay)
+    print("T_max:", args.t_max)
+    print("eta_min:", args.eta_min)
     print("==============================")
     
     # Make Data loader and Model
