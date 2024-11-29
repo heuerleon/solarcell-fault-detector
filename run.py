@@ -9,6 +9,8 @@ from PIL import Image
 import torch.nn as nn 
 import sys
 torch.manual_seed(0)
+from torchvision.models import efficientnet_b0, EfficientNet_B0_Weights
+from torchvision.models import resnet18, ResNet18_Weights
 from torchvision.models import mobilenet_v3_large
 
 class BinaryImageDataset(Dataset):
@@ -54,9 +56,9 @@ def inference(args, data_loader, model):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='2024 DL Term Project')
     parser.add_argument('--load-model', default='checkpoints/model.pth', help="Model's state_dict")
-    parser.add_argument('--batch-size', default=64, help='test loader batch size')
-    parser.add_argument('--fault-dir', default='term_project_train_data/fault', help='Directory for fault images')
-    parser.add_argument('--normal-dir', default='term_project_train_data/normal', help='Directory for normal images')
+    parser.add_argument('--batch-size', default=1, help='test loader batch size')
+    parser.add_argument('--fault-dir', default='test_image/fault', help='Directory for fault images')
+    parser.add_argument('--normal-dir', default='test_image/normal', help='Directory for normal images')
 
     args = parser.parse_args()
     
